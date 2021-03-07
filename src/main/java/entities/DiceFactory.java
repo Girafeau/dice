@@ -2,7 +2,7 @@ package entities;
 
 public class DiceFactory {
 
-	public static Dice getComputer(DiceAbstractFactory factory) {
+	public static Dice getDice(DiceAbstractFactory factory) {
 		return factory.createDice();
 	}
 
