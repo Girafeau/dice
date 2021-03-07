@@ -1,22 +1,27 @@
 package views;
 
-import javax.swing.*;
-import java.awt.*;
 
-public class Window extends JFrame {
+import com.google.common.eventbus.EventBus;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
-    public Window() {
-        this.setTitle("Jeu de dés");
-        this.getRootPane().setBorder(
-                BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLayout(new BorderLayout());
-        this.add(new HighScoreView(), BorderLayout.NORTH);
-        this.add(new DiceView(), BorderLayout.CENTER);
-        this.add(new CommandView(), BorderLayout.SOUTH);
-        this.pack();
-        this.setSize(1000, 1000);
-        this.setLocation(200, 200);
-        this.setVisible(true);
+public class Window extends Application {
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        EventBus eventBus = new EventBus();
+        stage.setTitle("Jeu de dés");
+        BorderPane pane = new BorderPane();
+        DiceView diceView = new DiceView(2);
+        CommandView commandView = new CommandView(eventBus);
+        pane.setCenter(diceView);
+        pane.setBottom(commandView);
+        Scene scene = new Scene(pane, 1000, 1000);
+        stage.setScene(scene);
+        stage.show();
+
+        eventBus.register(diceView);
     }
 }

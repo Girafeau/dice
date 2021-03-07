@@ -1,29 +1,29 @@
 package views;
 
 import entities.HighScore;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import javax.swing.*;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
-public class HighScoreView extends JPanel implements PropertyChangeListener {
+public class HighScoreView extends VBox {
+
+    private ObservableList<String> observable;
 
     public HighScoreView() {
-        String[][] data = {
-                {"55"}
-        };
-        String[] headers = {"Score"};
-        JTable table = new JTable(data, headers);
-        this.add(table);
-        this.setVisible(true);
+        GridPane grid = new GridPane();
+        this.observable = FXCollections.observableArrayList();
+        ListView<String> list = new ListView<>(observable);
+        grid.add(list, 0, 0);
+        this.getChildren().add(grid);
     }
 
     public void update() {
-
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
 
     }
 }

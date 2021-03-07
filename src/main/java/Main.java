@@ -3,15 +3,16 @@ import views.DiceView;
 import views.HighScoreView;
 import views.Window;
 
-import javax.swing.*;
+import static javafx.application.Application.launch;
 
 public class Main {
 
     public static void main(String [] args) {
-        SwingUtilities.invokeLater(() -> new Main().start());
+         new Main().start();
     }
+
     private void start() {
-        new Window();
+        launch(Window.class);
     }
 
 }

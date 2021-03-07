@@ -14,7 +14,6 @@ public class FilePersistenceStrategy implements PersistenceStrategy {
         this.file = new File(name);
     }
 
-
     @Override
     public void persist(int score) {
         try {
