@@ -42,39 +42,19 @@ public class CommandView extends HBox {
 
         this.throwDices.setOnAction((event) -> {
             this.game.setNbThrow(this.game.getNbThrow()+1);
+            this.game.getBus().post(new ThrowEvent(this.game.throwDices()));
             if(this.game.getNbThrow() == 10) {
                 this.throwDices.setDisable(true);
-                this.addScore();
+                HighScore.getInstance().addScore(this.game.getCurrentScore());
+                HighScore.getInstance().persist(new FilePersistenceStrategy("scores"), this.game.getCurrentScore());
+                this.game.getBus().post(new ScoreEvent(this.game.getCurrentScore()));
             }
-            this.game.getBus().post(new ThrowEvent(this.throwDices()));
         });
 
         this.getChildren().add(newGame);
         this.getChildren().add(throwDices);
         this.getChildren().add(this.nb);
         this.getChildren().add(this.score);
-    }
-
-
-    public List<Integer> throwDices() {
-        List<Integer> scores = new ArrayList<>();
-        int sum = 0;
-        int score = 0;
-        for(Dice dice : this.game.getDices()) {
-            score = dice.throwDice();
-            scores.add(score);
-            sum += score;
-        }
-        if (sum == 7) {
-            this.game.setCurrentScore(this.game.getCurrentScore() + 10);
-        }
-        return scores;
-    }
-
-    public void addScore() {
-        this.game.getBus().post(new ScoreEvent(this.game.getCurrentScore()));
-        HighScore.getInstance().addScore(this.game.getCurrentScore());
-        HighScore.getInstance().persist(new FilePersistenceStrategy("scores"), this.game.getCurrentScore());
     }
 
     @Subscribe

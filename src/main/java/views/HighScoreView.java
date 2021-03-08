@@ -20,17 +20,19 @@ public class HighScoreView extends VBox {
         GridPane grid = new GridPane();
         this.observable = FXCollections.observableArrayList();
         ListView<String> list = new ListView<>(observable);
-        HighScore.getInstance().getScores().forEach(score -> this.observable.add(Integer.toString(score)));
+        HighScore.getInstance().getBestScores(10).forEach(s -> this.observable.add(Integer.toString(s)));
         grid.add(list, 0, 0);
         this.getChildren().add(grid);
     }
 
     @Subscribe
     public void event(ScoreEvent event) {
-        this.update(event.getScore());
+        this.update();
     }
 
-    public void update(int score) {
-        this.observable.add(Integer.toString(score));
+    public void update() {
+        this.observable.clear();
+        HighScore.getInstance().sort();
+        HighScore.getInstance().getBestScores(10).forEach(s -> this.observable.add(Integer.toString(s)));
     }
 }

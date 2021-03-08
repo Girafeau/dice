@@ -25,6 +25,21 @@ public class Game {
         this.bus = new EventBus();
     }
 
+    public List<Integer> throwDices() {
+        List<Integer> scores = new ArrayList<>();
+        int sum = 0;
+        int score = 0;
+        for(Dice dice : this.dices) {
+            score = dice.throwDice();
+            scores.add(score);
+            sum += score;
+        }
+        if (sum == 7) {
+            this.currentScore += 10;
+        }
+        return scores;
+    }
+
     public void addListener(Object object) {
         this.bus.register(object);
     }

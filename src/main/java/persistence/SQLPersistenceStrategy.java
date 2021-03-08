@@ -28,10 +28,8 @@ public class SQLPersistenceStrategy implements PersistenceStrategy {
 		String request = "INSERT INTO HighScore(score) VALUES (?)";
 		try {
 			PreparedStatement ps = this.connection.prepareStatement(request);
-
 			int i = 1;
 			ps.setInt(i++, score);
-
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
