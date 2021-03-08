@@ -1,4 +1,4 @@
-package entities;
+package controllers;
 
 import com.google.common.eventbus.EventBus;
 import entities.Dice;
@@ -8,14 +8,14 @@ import entities.DiceFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game {
+public class GameController {
 
     private EventBus bus;
     private final List<Dice> dices;
     private int nbThrow;
     private int currentScore;
 
-    public Game(int nb) {
+    public GameController(int nb) {
         this.currentScore = 0;
         this.dices = new ArrayList<>();
         this.nbThrow = 0;

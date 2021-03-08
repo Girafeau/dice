@@ -5,6 +5,7 @@ import entities.HighScore;
 import events.ScoreEvent;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -17,6 +18,8 @@ public class HighScoreView extends VBox {
     private final ObservableList<String> observable;
 
     public HighScoreView() {
+        this.setPadding(new Insets(20));
+        this.setSpacing(20);
         GridPane grid = new GridPane();
         this.observable = FXCollections.observableArrayList();
         ListView<String> list = new ListView<>(observable);

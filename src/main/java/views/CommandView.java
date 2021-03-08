@@ -1,8 +1,7 @@
 package views;
 
 import com.google.common.eventbus.Subscribe;
-import entities.Dice;
-import entities.Game;
+import controllers.GameController;
 import entities.HighScore;
 import events.ScoreEvent;
 import events.ThrowEvent;
@@ -12,19 +11,16 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import persistence.FilePersistenceStrategy;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class CommandView extends HBox {
 
-    private final Game game;
+    private final GameController gameController;
     private Label nb;
     private Label score;
     private Button newGame;
     private Button throwDices;
 
-    public CommandView(Game game) {
-        this.game = game;
+    public CommandView(GameController gameController) {
+        this.gameController = gameController;
         this.setPadding(new Insets(20));
         this.setSpacing(20);
         this.newGame = new Button("Commencer une nouvelle partie");
@@ -34,20 +30,20 @@ public class CommandView extends HBox {
         this.throwDices.setDisable(true);
 
         this.newGame.setOnAction((event) -> {
-            this.game.setNbThrow(0);
-            this.game.setCurrentScore(0);
+            this.gameController.setNbThrow(0);
+            this.gameController.setCurrentScore(0);
             this.throwDices.setDisable(false);
             this.update();
         });
 
         this.throwDices.setOnAction((event) -> {
-            this.game.setNbThrow(this.game.getNbThrow()+1);
-            this.game.getBus().post(new ThrowEvent(this.game.throwDices()));
-            if(this.game.getNbThrow() == 10) {
+            this.gameController.setNbThrow(this.gameController.getNbThrow()+1);
+            this.gameController.getBus().post(new ThrowEvent(this.gameController.throwDices()));
+            if(this.gameController.getNbThrow() == 10) {
                 this.throwDices.setDisable(true);
-                HighScore.getInstance().addScore(this.game.getCurrentScore());
-                HighScore.getInstance().persist(new FilePersistenceStrategy("scores"), this.game.getCurrentScore());
-                this.game.getBus().post(new ScoreEvent(this.game.getCurrentScore()));
+                HighScore.getInstance().addScore(this.gameController.getCurrentScore());
+                HighScore.getInstance().persist(new FilePersistenceStrategy("scores"), this.gameController.getCurrentScore());
+                this.gameController.getBus().post(new ScoreEvent(this.gameController.getCurrentScore()));
             }
         });
 
@@ -63,7 +59,7 @@ public class CommandView extends HBox {
     }
 
     private void update() {
-        this.nb.setText("Lancés de dés : " + Integer.toString(this.game.getNbThrow()));
-        this.score.setText("Score de la partie : " + this.game.getCurrentScore());
+        this.nb.setText("Lancés de dés : " + Integer.toString(this.gameController.getNbThrow()));
+        this.score.setText("Score de la partie : " + this.gameController.getCurrentScore());
     }
 }
